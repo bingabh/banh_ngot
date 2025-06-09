@@ -14,7 +14,8 @@ if uploaded_file is not None:
         }
 
         try:
-            res = requests.post("http://localhost:8000/predict/", files=files)
+            # Thay đổi URL này thành URL của backend API của bạn trên Render
+            res = requests.post("https://ten-backend-cua-ban.onrender.com/predict/", files=files)
             if res.status_code == 200:
                 result = res.json()
                 st.success(f"🎯 Dự đoán: `{result['prediction']}` — 🎯 Độ chính xác: `{result['confidence']}`")
