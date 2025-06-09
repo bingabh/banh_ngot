@@ -5,8 +5,21 @@ from PIL import Image
 import io
 
 app = FastAPI()
+app.add_middleware(  # Thêm đoạn này ngay sau khi khởi tạo app
+    CORSMiddleware,
+    allow_origins=["*"],  # hoặc thay * bằng domain frontend nếu muốn bảo mật hơn
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app = FastAPI()
 model = load_model("MobileNet_RGB-2506.h5")
 class_names = ['donut', 'su kem', 'sừng bò', 'tart trứng']
+
+@app.get("/")
+async def root():
+    return {"message": "API is running!"}
 
 @app.post("/predict/")
 async def predict(file: UploadFile = File(...)):
@@ -25,3 +38,4 @@ async def predict(file: UploadFile = File(...)):
         "prediction": pred_class,
         "confidence": f"{confidence:.2f}%"
     }
+    
